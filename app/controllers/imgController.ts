@@ -12,13 +12,8 @@ cloudinary.v2.config({
 });
 
 export async function subirImg({ request, response }: { request: any, response: any }) {
-  const image = request.file('file');
-  if (!image) return response.badRequest('No se envió imagen');
-
-  const uploaded = await cloudinary.v2.uploader.upload(image.tmpPath!, {
-    folder: 'mi_app',
-  });
-
+  const image = request.file('imagen');
+  const uploaded = await cloudinary.v2.uploader.upload(image.tmpPath!);
   return response.ok({ url: uploaded.secure_url });
 }
 
