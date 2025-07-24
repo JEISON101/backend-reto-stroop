@@ -4,6 +4,7 @@ build
 tmp
 
 # Secrets
+stroop-6c260-firebase-adminsdk-fbsvc-4492313e9c.json
 .env
 .env.local
 .env.production.local
