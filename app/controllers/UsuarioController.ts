@@ -41,7 +41,7 @@ export class Usuario {
         nombre: user.nombre
       },
       process.env.JWT_SECRET || 'default_secret', 
-      { expiresIn: '4h' }
+      { expiresIn: '2h' }
     )    
 
     return response.json({
