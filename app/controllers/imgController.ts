@@ -1,5 +1,6 @@
 import cloudinary from 'cloudinary';
 import axios from 'axios';
+import { getId } from '#services/SocketService';
 
 const cloudName = process.env.CLOUD_NAME;
 const apiKey = process.env.API_KEY;
@@ -14,6 +15,7 @@ cloudinary.v2.config({
 export async function subirImg({ request, response }: { request: any, response: any }) {
   const image = request.file('imagen');
   const uploaded = await cloudinary.v2.uploader.upload(image.tmpPath!);
+  getId().emit('nueva-imagen', uploaded.secure_url);
   return response.ok({ url: uploaded.secure_url });
 }
 
