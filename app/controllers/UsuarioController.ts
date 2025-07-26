@@ -58,28 +58,25 @@ export class Usuario {
       { expiresIn: '4h' }
     )
     await client.query(`UPDATE usuarios SET token = $1 WHERE id = $2`, [token, user.id])
+    const usuario = await client.query(`SELECT * FROM usuarios WHERE email = $1`, [email])
 
     return response.json({
       valid: true,
       token: token,
-      usuario: user,
+      usuario: usuario.rows[0],
     })
   }
 
-  async setImagen({ params, request, response }: HttpContext) {
-    const { imagen } = request.body()
-    const id = params.id
+  async setImagen({ request, response }: HttpContext) {
+    const { id, imagen } = request.body()
     await client.query(`update usuarios set imagen='${imagen}' where id = $1`, [id])
     return response.json({ mensaje: 'Imagen actualizada' })
 
   }
+}
+// fin de la clase 
 
-  async getUsuario({ request, response }: HttpContext) {
-    const { id } = request.body()
-    const res = await client.query(`SELECT * FROM usuarios WHERE id = $1`, [id])
-    return response.json({ usuario: res.rows[0] })
-}}
-
+// Middleware para verificar el token JWT
 export async function authMiddleware(ctx: HttpContext) {
   const authHeader = ctx.request.header('Authorization')
 

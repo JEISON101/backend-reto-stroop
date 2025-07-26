@@ -14,9 +14,10 @@ cloudinary.v2.config({
 
 export async function subirImg({ request, response }: { request: any, response: any }) {
   const image = request.file('imagen');
+  const {nombre} = request.body();
   const socketId = request.header('socketId');
   const uploaded = await cloudinary.v2.uploader.upload(image.tmpPath!);
-  getId().except(socketId).emit("notificacion", {mensage: 'Nueva imagen subida'});
+  getId().except(socketId).emit("notificacion", {mensage:  `${nombre} ha subido una nueva imagen`});
   return response.ok({ url: uploaded.secure_url });
 }
 
