@@ -14,22 +14,20 @@ cloudinary.v2.config({
 
 export async function subirImg({ request, response }: { request: any, response: any }) {
   const image = request.file('imagen');
+  const socketId = request.header('socketId');
   const uploaded = await cloudinary.v2.uploader.upload(image.tmpPath!);
-  getId().emit('nueva-imagen', uploaded.secure_url);
+  getId().except(socketId).emit("notificacion", {mensage: 'Nueva imagen subida'});
   return response.ok({ url: uploaded.secure_url });
 }
 
-
 export async function obtenerImagenes() {
-  const response = await axios.get(
-    `https://api.cloudinary.com/v1_1/${cloudName}/resources/image`,
+  const response = await axios.get(`https://api.cloudinary.com/v1_1/${cloudName}/resources/image`,
     {
       auth: {
-        username: apiKey,
-        password: apiSecret,
+        username: apiKey || '',
+        password: apiSecret || ''
       },
     }
   )
-
   return response.data.resources
 }

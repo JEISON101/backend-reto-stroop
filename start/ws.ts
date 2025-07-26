@@ -11,7 +11,6 @@ app.ready(() => {
   setId(io);
   io.on('connection', (socket) => {
     console.log('Una nueva conexión en socket', socket.id)
-    socket.emit('Bienvenido a strooper')
   });
 });
    
